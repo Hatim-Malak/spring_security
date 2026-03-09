@@ -22,4 +22,9 @@ public class UserController {
         user.setPassword(encodedPassword);
         return service.reqister(user);
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return service.verify(user);
+    }
 }
