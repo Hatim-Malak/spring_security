@@ -24,7 +24,7 @@ public class UserService {
         return repo.save(user);
     }
 
-    public String verify(User user) {
+    public int verify(User user) {
         Authentication authentication = authManager.authenticate(
             new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
