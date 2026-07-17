@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import spring_security.model.User;
 
@@ -24,12 +25,12 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return user.getPassword();
+        return user.getUsername();   // ← swapped
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getPassword();   // ← swapped
     }
     
 }
