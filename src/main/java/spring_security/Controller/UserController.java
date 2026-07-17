@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user){
-        String encodedPassword = encoder.encode(user.getPassword());  // ← bug: copied from register()
+        String encodedPassword = encoder.encode(user.getPassword()); 
         user.setPassword(encodedPassword);
         return service.verify(user);
     }
