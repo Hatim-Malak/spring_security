@@ -27,6 +27,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     ApplicationContext context;
+    private MyuserDetailService userDetailsService;
+
+    // Add this block (a lazy-init pattern gone wrong)
+    private MyuserDetailService getUserDetailsService() {
+        if (userDetailsService == null) {
+            userDetailsService = context.getBean(MyuserDetailService.class);
+        }
+        return userDetailsService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -39,8 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = context.getBean(MyuserDetailService.class).loadUserByUsername(username);  
-
+            UserDetails userDetails = getUserDetailsService().loadUserByUsername(username);
             if(jwtservice.validateToken(token,userDetails)){
                 UsernamePasswordAuthenticationToken authtoken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 authtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
